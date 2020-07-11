@@ -1,52 +1,103 @@
-# Import Dependencies
 
 import os
-
 import csv
 
 
-# Declare file location through pathlib
-csv_file = os.path.join('..', 'Resources', 'election_data.csv')
 
-# Create empty lists to iterate through specific rows for the following variables
-total_votes = []
-khan_votes = []
-correy_votes = []
+csvpath = os.path.join('election_data.csv')
+pathout = os.path.join('election_analysis.txt')
 
- 
-# Open csv in default read mode with context manager
-with open(csv_file) as election_data:
+with open(csvpath, newline='') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    print(csvreader)
+    csv_header = next(csvreader)
+    
 
-     # Store the contents of budget_data.csv in the variable csvreader
-    csvreader = csv.reader(election_data,delimiter=",") 
+    votes = []
+    county = []
+    candidates = []
+    khan = []
+    correy = []
+    li = []
+    otooley = []
 
-    # Skip the header labels to iterate with the values
-    header = next(csvreader)  
-
-    # Iterate through the rows in the stored file contents
-    for row in election_data: 
-
-        # Append the total months and total profit to their corresponding lists
-        total_votes.append(row[0])
-        khan_votes.append(int(row[2]))
-        correy_votes.append(int(row[2]))
-
-    for row in election_data:
-
-         if row == "Khan":
-                khan_votes.values = khan_votes + 1
+    for row in csvreader:
+        votes.append(int(row[0]))
+        county.append(row[1])
+        candidates.append(row[2])
 
 
-
-# Print Statements
-
-print("Election Results")
-print("----------------------------")
-print(f"Total Votes: {len(total_votes)}")
-print("----------------------------")
-print(f"Khan Votes: {sum(khan_votes)}")
-print(f"Khan Votes: {sum(khan_votes)/len(total_votes)}")
-print("----------------------------")
+    total_votes = (len(votes))
+    print(total_votes)
 
 
+    for candidate in candidates:
+        if candidate == "Khan":
+            khan.append(candidates)
+            khan_votes = len(khan)
+        elif candidate == "Correy":
+            correy.append(candidates)
+            correy_votes = len(correy)
+        elif candidate == "Li":
+            li.append(candidates)
+            li_votes = len(li)
+        else:
+            otooley.append(candidates)
+            otooley_votes = len(otooley)
+    print(khan_votes)
+    print(correy_votes)
+    print(li_votes)
+    print(otooley_votes)
+    
+    
 
+    khan_percent = round(((khan_votes / total_votes) * 100), 2)
+    correy_percent = round(((correy_votes / total_votes) * 100), 2)
+    li_percent = round(((li_votes / total_votes) * 100), 2)
+    otooley_percent = round(((otooley_votes / total_votes) * 100), 2)
+    print(khan_percent)
+    print(correy_percent)
+    print(li_percent)
+    print(otooley_percent)
+    
+    
+    if khan_percent > max(correy_percent, li_percent, otooley_percent):
+        winner = "Khan"
+    elif correy_percent > max(khan_percent, li_percent, otooley_percent):
+        winner = "Correy"  
+    elif li_percent > max(correy_percent, khan_percent, otooley_percent):
+        winner = "Li"
+    else:
+        winner = "O'Tooley"
+
+
+print(f"Election Results")
+print(f"-----------------------------------") 
+print(f"Total Votes: {total_votes}")
+print(f"-----------------------------------") 
+print(f"Khan: {khan_percent}% ({khan_votes})") 
+print(f"Correy: {correy_percent}% ({correy_votes})") 
+print(f"Li: {li_percent}% ({li_votes})")
+print(f"O'Tooley: {otooley_percent}% ({otooley_votes})") 
+print(f"-----------------------------------")
+print(f"Winner: {winner}") 
+print(f"-----------------------------------")
+
+
+text_output = (
+f"Election Results\n"
+f"-----------------------------------\n"
+f"Total Votes: {total_votes}\n"
+f"-----------------------------------\n" 
+f"Khan: {khan_percent}% ({khan_votes})\n"
+f"Correy: {correy_percent}% ({correy_votes})\n"
+f"Li: {li_percent}% ({li_votes})\n"
+f"O'Tooley: {otooley_percent}% ({otooley_votes})\n"
+f"-----------------------------------\n"
+f"Winner: {winner}\n" 
+f"-----------------------------------\n")
+
+print(text_output)
+
+with open(pathout, "w") as txt_file:
+    txt_file.write(text_output)

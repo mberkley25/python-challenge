@@ -1,21 +1,18 @@
-# Import Dependencies
+
 import os
 
 import csv
 
 
-# Declare file location through pathlib
 csv_file = os.path.join('..', 'Resources', 'budget_data.csv')
+pathout = os.path.join('..','Resources', 'budget_analysis.txt')
 
-# Create empty lists to iterate through specific rows for the following variables
 total_months = []
 total_profit = []
 monthly_profit_change = []
  
-# Open csv in default read mode with context manager
 with open(csv_file) as finances:
 
-     # Store the contents of budget_data.csv in the variable csvreader
     csvreader = csv.reader(finances,delimiter=",") 
 
     # Skip the header labels to iterate with the values
@@ -56,3 +53,18 @@ print(f"Greatest Decrease in Profits: {total_months[max_decrease_month]} (${(str
 
 print(f"${sum(total_profit)}")
 
+
+text_output = (
+f"Total Months: {len(total_months)}\n"
+f"Total: ${sum(total_profit)}\n"
+f"Average Change: {round(sum(monthly_profit_change)/len(monthly_profit_change),2)}\n"
+f"Greatest Increase in Profits: {total_months[max_increase_month]} (${(str(max_increase_value))}\n"
+f"Greatest Decrease in Profits: {total_months[max_decrease_month]} (${(str(max_decrease_value))})\n"
+
+
+f"${sum(total_profit)}\n")
+
+print(text_output)
+
+with open(pathout, "w") as txt_file:
+    txt_file.write(text_output)
